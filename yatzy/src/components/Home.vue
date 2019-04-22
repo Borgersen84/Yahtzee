@@ -1,3 +1,5 @@
 <template>
-    <h1>Home</h1>
+    <div class="center">
+        <button id="play-button">Play Yahtzee</button>
+    </div>
 </template>
