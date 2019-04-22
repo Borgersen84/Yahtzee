@@ -2,8 +2,8 @@
     <div>
         <div class="center">
             <button id="dice-button">Roll Dices</button>
-            <div class="sidesheet">
-                <table class="shit">
+            <div class="scoreboard">
+                <table class="scoreboard-column">
                     <tr>
                         <th></th>
                         <th>Score</th>

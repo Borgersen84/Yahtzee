@@ -62,13 +62,13 @@ table, th, td {
   border: 1px solid black;
 }
 
-.sidesheet {
+.scoreboard {
   font-size: 1.5rem;
   margin-top: 2.2rem;
   background-color: rgb(250, 235, 168);
 }
 
-.shit {
+.scoreboard-column {
   width: 100%;
 }
 </style>
