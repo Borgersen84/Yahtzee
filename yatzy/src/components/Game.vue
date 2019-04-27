@@ -2,11 +2,11 @@
     <div>
         <div class="center">
             <div class="dice">
-                <p id="dice-one">{{newNumbers[0]}}</p>
-                <p id="dice-two">{{newNumbers[1]}}</p>
-                <p id="dice-three">{{newNumbers[2]}}</p>
-                <p id="dice-four">{{newNumbers[3]}}</p>
-                <p id="dice-five">{{newNumbers[4]}}</p>
+                <div id="dice-one" @click="dicesHeld[0]=true">{{diceValues[0]}}</div>
+                <div id="dice-two">{{diceValues[1]}}</div>
+                <div id="dice-three">{{diceValues[2]}}</div>
+                <div id="dice-four">{{diceValues[3]}}</div>
+                <div id="dice-five">{{diceValues[4]}}</div>
             </div>
             <button 
             id="dice-button"
@@ -20,31 +20,31 @@
                     </tr>
                     <tr>
                         <td>Ones</td>
-                        <td id="ones"></td>
+                        <td id="ones">{{checkForOnes()}}</td>
                     </tr>
                     <tr>
                         <td>Twos</td>
-                        <td id="twos">0</td>
+                        <td id="twos">{{checkForTwos()}}</td>
                     </tr>
                     <tr>
                         <td>Threes</td>
-                        <td id="threes">0</td>
+                        <td id="threes">{{checkForThrees()}}</td>
                     </tr>
                     <tr>
                         <td>Fours</td>
-                        <td id="fours">0</td>
+                        <td id="fours">{{checkForFours()}}</td>
                     </tr>
                     <tr>
                         <td>Fives</td>
-                        <td id="fives">0</td>
+                        <td id="fives">{{checkForFives()}}</td>
                     </tr>
                     <tr>
                         <td>Sixes</td>
-                        <td id="sixes">0</td>
+                        <td id="sixes">{{checkForSixes()}}</td>
                     </tr>
                     <tr>
                         <td>Upper Total</td>
-                        <td id="upper">0</td>
+                        <td id="upper">{{calculateUpperTotal()}}</td>
                     </tr>
                     <tr>
                         <td>Bonus</td>
@@ -76,7 +76,7 @@
                     </tr>
                     <tr>
                         <td>Chance</td>
-                        <td id="chance">0</td>
+                        <td id="chance">{{sumOfDices()}}</td>
                     </tr>
                     <tr>
                         <td>Yahtzee Bonus</td>
@@ -97,42 +97,109 @@ export default {
     data() {
         return {
             isValid: false,
-            dices: [1, 4, 6, 3, 2],
-            newNumbers: []
+            dicesHeld: [false, false, false, false, false],
+            diceValues: [],
+            sum: 0,
+            rolls: 0,
+            hold: true,
+            ones: 0,
+            twos: 0,
+            threes: 0,
+            fours: 0,
+            fives: 0,
+            sixes: 0
         }
     },
     methods: {
-        rollDices() {
-            this.newNumbers = [];
-            var i;
-            for(i = 0; i < this.dices.length; i++){
-                this.dices[i] = Math.floor(Math.random() * 6) + 1;
-                this.newNumbers += this.dices[i];
-            }
-            return this.newNumbers;
-        },
-        getResult() {
-            var result = this.rollDices();
+        startGame() {
 
-        }
-    },
-    computed: {
-        returnDiceOne() {
-            return this.dices[0];
         },
-        returnDiceTwo() {
-            return this.dices[1];
+        holdDice() {
+
         },
-        returnDiceThree() {
-            return this.dices[2];
+        sumOfDices() {
+            this.sum = 0;
+            let i;
+            for(i = 0; i < 5; i++){
+                this.sum += i;
+            }
+            return this.sum;
+
         },
-        returnDiceFour() {
-            return this.dices[3];
+        rollDices() {
+            this.diceValues = [];
+            let i;
+            for(i = 0; i < 5; i++){
+                if(this.dicesHeld[i] === false){
+                    this.diceValues[i] = Math.floor(Math.random() * 6) + 1;
+                }    
+            }
+            
+            console.log(this.rolls);
+            this.rolls ++;
+            return this.diceValues;
+            
         },
-        returnDiceFive() {
-            return this.dices[4];
+        checkForOnes() {
+            this.ones = 0;
+            this.diceValues.forEach((number) => {
+                if(number === 1){
+                    this.ones += number;
+                }
+            });
+            return this.ones;
+        },
+        checkForTwos() {
+            this.twos = 0;
+            this.diceValues.forEach((number) => {
+               if(number === 2){
+                   this.twos += number;
+               }
+            });
+           return this.twos;
+        },
+        checkForThrees() {
+            this.threes = 0;
+            this.diceValues.forEach((number) => {
+               if(number === 3){
+                   this.threes += number;
+               }
+            });
+           return this.threes;
+        },
+        checkForFours() {
+            this.fours = 0;
+            this.diceValues.forEach((number) => {
+               if(number === 4){
+                   this.fours += number;
+               }
+            });
+           return this.fours;
+        },
+        checkForFives() {
+            this.fives = 0;
+            this.diceValues.forEach((number) => {
+               if(number === 5){
+                   this.fives += number;
+               }
+            });
+           return this.fives;
+        },
+        checkForSixes() {
+            this.sixes = 0;
+            this.diceValues.forEach((number) => {
+               if(number === 6){
+                   this.sixes += number;
+               }
+            });
+           return this.sixes;
+        },
+        calculateUpperTotal() {
+           return this.ones + this.twos + this.threes + this.fours
+            + this.fives + this.sixes;
         }
     }
+    
 }
 </script>
 
