@@ -20,27 +20,27 @@
                     </tr>
                     <tr>
                         <td>Ones</td>
-                        <td id="ones">{{checkForOnes()}}</td>
+                        <td class="scoreboard-sum" @click="freezeOnes()">{{checkForOnes()}}</td>
                     </tr>
                     <tr>
                         <td>Twos</td>
-                        <td id="twos">{{checkForTwos()}}</td>
+                        <td class="scoreboard-sum" @click="freezeTwoes()">{{checkForTwos()}}</td>
                     </tr>
                     <tr>
                         <td>Threes</td>
-                        <td id="threes">{{checkForThrees()}}</td>
+                        <td class="scoreboard-sum" @click="freezeThrees()">{{checkForThrees()}}</td>
                     </tr>
                     <tr>
                         <td>Fours</td>
-                        <td id="fours">{{checkForFours()}}</td>
+                        <td class="scoreboard-sum" @click="freezeFours()">{{checkForFours()}}</td>
                     </tr>
                     <tr>
                         <td>Fives</td>
-                        <td id="fives">{{checkForFives()}}</td>
+                        <td class="scoreboard-sum" @click="freezeFives()">{{checkForFives()}}</td>
                     </tr>
                     <tr>
                         <td>Sixes</td>
-                        <td id="sixes">{{checkForSixes()}}</td>
+                        <td class="scoreboard-sum" @click="freezeSixes()">{{checkForSixes()}}</td>
                     </tr>
                     <tr>
                         <td>Upper Total</td>
@@ -52,31 +52,31 @@
                     </tr>
                     <tr>
                         <td>3 of a kind</td>
-                        <td id="three-of-a">0</td>
+                        <td class="scoreboard-sum">0</td>
                     </tr>
                     <tr>
                         <td>4 of a kind</td>
-                        <td id="four-of-a">0</td>
+                        <td class="scoreboard-sum">0</td>
                     </tr>
                     <tr>
                         <td>Full House</td>
-                        <td id="fullhouse">0</td>
+                        <td class="scoreboard-sum">0</td>
                     </tr>
                     <tr>
                         <td>Small Straight</td>
-                        <td id="smallstraight">0</td>
+                        <td class="scoreboard-sum">0</td>
                     </tr>
                     <tr>
                         <td>Large Straight</td>
-                        <td id="largestraight">0</td>
+                        <td class="scoreboard-sum">0</td>
                     </tr>
                     <tr>
                         <td>YAHTZEE</td>
-                        <td id="yahtzee">0</td>
+                        <td class="scoreboard-sum">0</td>
                     </tr>
                     <tr>
                         <td>Chance</td>
-                        <td id="chance">{{sumOfDices()}}</td>
+                        <td class="scoreboard-sum">{{sumOfDices()}}</td>
                     </tr>
                     <tr>
                         <td>Yahtzee Bonus</td>
@@ -96,7 +96,6 @@
 export default {
     data() {
         return {
-            isValid: false,
             dicesHeld: [false, false, false, false, false],
             diceValues: [],
             sum: 0,
@@ -107,7 +106,14 @@ export default {
             threes: 0,
             fours: 0,
             fives: 0,
-            sixes: 0
+            sixes: 0,
+            upperTotal: 0,
+            onesIsValid: true,
+            twosIsValid: true,
+            threesIsValid: true,
+            foursIsValid: true,
+            fivesIsValid: true,
+            sixesIsValid: true
         }
     },
     methods: {
@@ -135,68 +141,99 @@ export default {
                 }    
             }
             
-            console.log(this.rolls);
+            console.log(this.onesIsValid);
             this.rolls ++;
             return this.diceValues;
             
         },
         checkForOnes() {
-            this.ones = 0;
-            this.diceValues.forEach((number) => {
-                if(number === 1){
-                    this.ones += number;
-                }
-            });
+            if(this.onesIsValid) {
+                this.ones = 0;
+                this.diceValues.forEach((number) => {
+                    if(number === 1){
+                        this.ones += number;
+                    }
+                });
+            }
             return this.ones;
         },
         checkForTwos() {
-            this.twos = 0;
-            this.diceValues.forEach((number) => {
-               if(number === 2){
-                   this.twos += number;
-               }
-            });
-           return this.twos;
+            if(this.twosIsValid) {
+                this.twos = 0;
+                this.diceValues.forEach((number) => {
+                if(number === 2){
+                    this.twos += number;
+                }
+                });
+            }
+            return this.twos;
         },
         checkForThrees() {
-            this.threes = 0;
-            this.diceValues.forEach((number) => {
-               if(number === 3){
-                   this.threes += number;
-               }
-            });
-           return this.threes;
+            if(this.threesIsValid) {
+                this.threes = 0;
+                this.diceValues.forEach((number) => {
+                if(number === 3){
+                    this.threes += number;
+                }
+                });
+            }
+            return this.threes;
         },
         checkForFours() {
-            this.fours = 0;
-            this.diceValues.forEach((number) => {
-               if(number === 4){
-                   this.fours += number;
-               }
-            });
-           return this.fours;
+            if(this.foursIsValid) {
+                this.fours = 0;
+                this.diceValues.forEach((number) => {
+                if(number === 4){
+                    this.fours += number;
+                }
+                });
+            }
+            return this.fours;
         },
         checkForFives() {
-            this.fives = 0;
-            this.diceValues.forEach((number) => {
-               if(number === 5){
-                   this.fives += number;
-               }
-            });
-           return this.fives;
+            if(this.fivesIsValid) {
+                this.fives = 0;
+                this.diceValues.forEach((number) => {
+                if(number === 5){
+                    this.fives += number;
+                }
+                });
+            }
+            return this.fives;
         },
         checkForSixes() {
-            this.sixes = 0;
-            this.diceValues.forEach((number) => {
-               if(number === 6){
-                   this.sixes += number;
-               }
-            });
-           return this.sixes;
+            if(this.sixesIsValid) {
+                this.sixes = 0;
+                this.diceValues.forEach((number) => {
+                if(number === 6){
+                    this.sixes += number;
+                }
+                });
+            }
+            return this.sixes;
         },
         calculateUpperTotal() {
-           return this.ones + this.twos + this.threes + this.fours
+           this.upperTotal = this.ones + this.twos + this.threes + this.fours
             + this.fives + this.sixes;
+            return this.upperTotal;
+        },
+        freezeOnes() {
+            return this.onesIsValid = false;
+        },
+        freezeTwoes() {
+            return this.twosIsValid = false;
+        },
+        freezeThrees() {
+            return this.threesIsValid = false;
+        },
+        freezeFours() {
+            return this.foursIsValid = false;
+        },
+        freezeFives() {
+            return this.fivesIsValid = false;
+        },
+        freezeSixes() {
+            return this.sixesIsValid = false;
         }
     }
     
@@ -230,6 +267,10 @@ export default {
         border-radius: 1rem;  
         font-size: 3rem;
         background-color: white;
+    }
+
+    .scoreboard-sum:hover {
+        cursor: pointer;
     }
 </style>
 
