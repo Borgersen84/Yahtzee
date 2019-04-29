@@ -2,15 +2,15 @@
     <div>
         <div class="center">
             <div class="dice">
-                <div id="dice-one" @click="dicesHeld[0]=true">{{diceValues[0]}}</div>
-                <div id="dice-two">{{diceValues[1]}}</div>
-                <div id="dice-three">{{diceValues[2]}}</div>
-                <div id="dice-four">{{diceValues[3]}}</div>
-                <div id="dice-five">{{diceValues[4]}}</div>
+                <div id="dice-one" @click="holdDice(0)">{{this.$store.state.dices[0].value}}</div>
+                <div id="dice-two" @click="holdDice(1)">{{this.$store.state.dices[1].value}}</div>
+                <div id="dice-three" @click="holdDice(2)">{{this.$store.state.dices[2].value}}</div>
+                <div id="dice-four" @click="holdDice(3)">{{this.$store.state.dices[3].value}}</div>
+                <div id="dice-five" @click="holdDice(4)">{{this.$store.state.dices[4].value}}</div>
             </div>
             <button 
             id="dice-button"
-            @click="rollDices"
+            @click="startGame"
             >Roll Dices</button>
             <div class="scoreboard">
                 <table class="scoreboard-column">
@@ -20,31 +20,31 @@
                     </tr>
                     <tr>
                         <td>Ones</td>
-                        <td class="scoreboard-sum" @click="freezeOnes()">{{checkForOnes()}}</td>
+                        <td class="scoreboard-sum"></td>
                     </tr>
                     <tr>
                         <td>Twos</td>
-                        <td class="scoreboard-sum" @click="freezeTwoes()">{{checkForTwos()}}</td>
+                        <td class="scoreboard-sum"></td>
                     </tr>
                     <tr>
                         <td>Threes</td>
-                        <td class="scoreboard-sum" @click="freezeThrees()">{{checkForThrees()}}</td>
+                        <td class="scoreboard-sum"></td>
                     </tr>
                     <tr>
                         <td>Fours</td>
-                        <td class="scoreboard-sum" @click="freezeFours()">{{checkForFours()}}</td>
+                        <td class="scoreboard-sum"></td>
                     </tr>
                     <tr>
                         <td>Fives</td>
-                        <td class="scoreboard-sum" @click="freezeFives()">{{checkForFives()}}</td>
+                        <td class="scoreboard-sum"></td>
                     </tr>
                     <tr>
                         <td>Sixes</td>
-                        <td class="scoreboard-sum" @click="freezeSixes()">{{checkForSixes()}}</td>
+                        <td class="scoreboard-sum"></td>
                     </tr>
                     <tr>
                         <td>Upper Total</td>
-                        <td id="upper">{{calculateUpperTotal()}}</td>
+                        <td id="upper"></td>
                     </tr>
                     <tr>
                         <td>Bonus</td>
@@ -76,7 +76,7 @@
                     </tr>
                     <tr>
                         <td>Chance</td>
-                        <td class="scoreboard-sum">{{sumOfDices()}}</td>
+                        <td class="scoreboard-sum"></td>
                     </tr>
                     <tr>
                         <td>Yahtzee Bonus</td>
@@ -94,147 +94,17 @@
 
 <script>
 export default {
-    data() {
-        return {
-            dicesHeld: [false, false, false, false, false],
-            diceValues: [],
-            sum: 0,
-            rolls: 0,
-            hold: true,
-            ones: 0,
-            twos: 0,
-            threes: 0,
-            fours: 0,
-            fives: 0,
-            sixes: 0,
-            upperTotal: 0,
-            onesIsValid: true,
-            twosIsValid: true,
-            threesIsValid: true,
-            foursIsValid: true,
-            fivesIsValid: true,
-            sixesIsValid: true
-        }
-    },
     methods: {
         startGame() {
-
+            this.rollDices();
         },
-        holdDice() {
-
-        },
-        sumOfDices() {
-            this.sum = 0;
-            let i;
-            for(i = 0; i < 5; i++){
-                this.sum += i;
-            }
-            return this.sum;
-
+        holdDice(index) {
+            this.$store.commit('holdDices', index);
         },
         rollDices() {
-            this.diceValues = [];
-            let i;
-            for(i = 0; i < 5; i++){
-                if(this.dicesHeld[i] === false){
-                    this.diceValues[i] = Math.floor(Math.random() * 6) + 1;
-                }    
-            }
-            
-            console.log(this.onesIsValid);
-            this.rolls ++;
-            return this.diceValues;
-            
+           this.$store.commit('rollDice', 'index');
         },
-        checkForOnes() {
-            if(this.onesIsValid) {
-                this.ones = 0;
-                this.diceValues.forEach((number) => {
-                    if(number === 1){
-                        this.ones += number;
-                    }
-                });
-            }
-            return this.ones;
-        },
-        checkForTwos() {
-            if(this.twosIsValid) {
-                this.twos = 0;
-                this.diceValues.forEach((number) => {
-                if(number === 2){
-                    this.twos += number;
-                }
-                });
-            }
-            return this.twos;
-        },
-        checkForThrees() {
-            if(this.threesIsValid) {
-                this.threes = 0;
-                this.diceValues.forEach((number) => {
-                if(number === 3){
-                    this.threes += number;
-                }
-                });
-            }
-            return this.threes;
-        },
-        checkForFours() {
-            if(this.foursIsValid) {
-                this.fours = 0;
-                this.diceValues.forEach((number) => {
-                if(number === 4){
-                    this.fours += number;
-                }
-                });
-            }
-            return this.fours;
-        },
-        checkForFives() {
-            if(this.fivesIsValid) {
-                this.fives = 0;
-                this.diceValues.forEach((number) => {
-                if(number === 5){
-                    this.fives += number;
-                }
-                });
-            }
-            return this.fives;
-        },
-        checkForSixes() {
-            if(this.sixesIsValid) {
-                this.sixes = 0;
-                this.diceValues.forEach((number) => {
-                if(number === 6){
-                    this.sixes += number;
-                }
-                });
-            }
-            return this.sixes;
-        },
-        calculateUpperTotal() {
-           this.upperTotal = this.ones + this.twos + this.threes + this.fours
-            + this.fives + this.sixes;
-            return this.upperTotal;
-        },
-        freezeOnes() {
-            return this.onesIsValid = false;
-        },
-        freezeTwoes() {
-            return this.twosIsValid = false;
-        },
-        freezeThrees() {
-            return this.threesIsValid = false;
-        },
-        freezeFours() {
-            return this.foursIsValid = false;
-        },
-        freezeFives() {
-            return this.fivesIsValid = false;
-        },
-        freezeSixes() {
-            return this.sixesIsValid = false;
-        }
+        
     }
     
 }
