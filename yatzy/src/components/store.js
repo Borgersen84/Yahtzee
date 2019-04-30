@@ -10,11 +10,11 @@ export const store = new Vuex.Store({
                 {id: 2, isHeld: false, value: 0},
                 {id: 3, isHeld: false, value: 0},
                 {id: 4, isHeld: false, value: 0},],
-        
+        rolls: 0
     },
     getters: {
-        getDiceValues: state => {
-            return state.dices;
+        getDiceHeldOne: state => {
+            return state.dices[0].isHeld;
         }
     },
     mutations: {

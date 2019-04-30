@@ -1,16 +1,10 @@
 <template>
     <div>
         <div class="center">
-            <div class="dice">
-                <div id="dice-one" @click="holdDice(0)">{{this.$store.state.dices[0].value}}</div>
-                <div id="dice-two" @click="holdDice(1)">{{this.$store.state.dices[1].value}}</div>
-                <div id="dice-three" @click="holdDice(2)">{{this.$store.state.dices[2].value}}</div>
-                <div id="dice-four" @click="holdDice(3)">{{this.$store.state.dices[3].value}}</div>
-                <div id="dice-five" @click="holdDice(4)">{{this.$store.state.dices[4].value}}</div>
-            </div>
+            <app-dices></app-dices>
             <button 
             id="dice-button"
-            @click="startGame"
+            @click="rollDices"
             >Roll Dices</button>
             <div class="scoreboard">
                 <table class="scoreboard-column">
@@ -93,17 +87,17 @@
 </template>
 
 <script>
+import Dices from './Dices.vue';
 export default {
+    components: {
+        appDices: Dices
+    },
     methods: {
-        startGame() {
-            this.rollDices();
-        },
-        holdDice(index) {
-            this.$store.commit('holdDices', index);
-        },
         rollDices() {
            this.$store.commit('rollDice', 'index');
-        },
+        }
+    },
+    computed: {
         
     }
     
@@ -116,30 +110,11 @@ export default {
         text-align: center;
     }
 
-    .dice {
-        display: flex;
-        border: 1px solid gray;
-        margin: 0 auto;
-        margin-bottom: 1rem;
-        background-color: rgb(250, 235, 168);
-    }
-
-    #dice-one,
-    #dice-two,
-    #dice-three,
-    #dice-four,
-    #dice-five {
-        height: 7rem;
-        width: 7rem;
-        padding: 2.2rem;
-        margin: 0 auto;
-        border: 1px solid gray;
-        border-radius: 1rem;  
-        font-size: 3rem;
-        background-color: white;
-    }
-
     .scoreboard-sum:hover {
+        cursor: pointer;
+    }
+
+    .dice-holder:hover {
         cursor: pointer;
     }
 </style>
