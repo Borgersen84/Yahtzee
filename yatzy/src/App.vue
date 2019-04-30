@@ -36,39 +36,4 @@ export default {
   padding: 2rem;
 }
 
-#play-button {
-  font-size: 5rem;
-  color: rgb(42, 23, 124);
-  border: 0.1rem solid black;
-  background-color: aliceblue;
-}
-
-#play-button:hover {
-  cursor: pointer;
-}
-
-#dice-button {
-  font-size: 2.5rem;
-  color: rgb(74, 36, 172);
-  background-color: rgb(255, 254, 254);
-  border: 0.1rem solid black;
-}
-
-#dice-button:hover {
-  cursor: pointer;
-}
-
-table, th, td {
-  border: 1px solid black;
-}
-
-.scoreboard {
-  font-size: 1.5rem;
-  margin-top: 2.2rem;
-  background-color: rgb(250, 235, 168);
-}
-
-.scoreboard-column {
-  width: 100%;
-}
 </style>
