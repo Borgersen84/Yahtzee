@@ -1,85 +1,37 @@
 <template>
     <div class="scoreboard">
         <table class="scoreboard-column">
-                <tr>
-                    <th></th>
-                    <th>Score</th>
-                </tr>
-                <tr>
-                    <td>Ones</td>
-                    <td class="scoreboard-sum"></td>
-                </tr>
-                <tr>
-                    <td>Twos</td>
-                    <td class="scoreboard-sum"></td>
-                </tr>
-                <tr>
-                    <td>Threes</td>
-                    <td class="scoreboard-sum"></td>
-                </tr>
-                <tr>
-                    <td>Fours</td>
-                    <td class="scoreboard-sum"></td>
-                </tr>
-                <tr>
-                    <td>Fives</td>
-                    <td class="scoreboard-sum"></td>
-                </tr>
-                <tr>
-                    <td>Sixes</td>
-                    <td class="scoreboard-sum"></td>
-                </tr>
-                <tr>
-                    <td>Upper Total</td>
-                    <td id="upper"></td>
-                </tr>
-                <tr>
-                    <td>Bonus</td>
-                    <td id="bonus">0</td>
-                </tr>
-                <tr>
-                    <td>3 of a kind</td>
-                    <td class="scoreboard-sum">0</td>
-                </tr>
-                <tr>
-                    <td>4 of a kind</td>
-                    <td class="scoreboard-sum">0</td>
-                </tr>
-                <tr>
-                    <td>Full House</td>
-                    <td class="scoreboard-sum">0</td>
-                </tr>
-                <tr>
-                    <td>Small Straight</td>
-                    <td class="scoreboard-sum">0</td>
-                </tr>
-                <tr>
-                    <td>Large Straight</td>
-                    <td class="scoreboard-sum">0</td>
-                </tr>
-                <tr>
-                    <td>YAHTZEE</td>
-                    <td class="scoreboard-sum">0</td>
-                </tr>
-                <tr>
-                    <td>Chance</td>
-                    <td class="scoreboard-sum"></td>
-                </tr>
-                <tr>
-                    <td>Yahtzee Bonus</td>
-                    <td id="yahtzee-bonus">0</td>
-                </tr>
-                <tr>
-                    <td>Sum</td>
-                    <td id="sum">0</td>
-                </tr>
+            <tr>
+                <th class="table-th" v-for="(column, index) in columns()" :key="index">{{column}}</th>
+            </tr>
+            <tr  v-for="(combo, index) in combinations()" :key="index">
+                <td v-for="(column, indexColumn,) in columns()" :key="indexColumn">{{combo[column]}}</td>
+            </tr>
         </table>
     </div>
 </template>
 
+<script>
+export default {
+    methods: {
+        columns() {
+            return this.$store.getters.getColumns;
+        },
+        combinations() {
+             return this.$store.getters.getCombinations;
+        }
+    }
+}
+</script>
+
+
 <style>
     table, th, td {
         border: 1px solid black;
+    }
+
+    .table-th {
+        text-transform: uppercase;
     }
 
     .scoreboard {

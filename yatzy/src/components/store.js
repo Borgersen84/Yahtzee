@@ -10,11 +10,33 @@ export const store = new Vuex.Store({
                 {id: 2, isHeld: false, value: 0},
                 {id: 3, isHeld: false, value: 0},
                 {id: 4, isHeld: false, value: 0},],
-        rolls: 0
+        rolls: 0,
+        combinations: [{id: 1, combinations: 'Ones', isLocked: false, points: 0},
+                       {id: 2, combinations: 'Twoes', isLocked: false, points: 0},
+                       {id: 3, combinations: 'Threes', isLocked: false, points: 0},
+                       {id: 4, combinations: 'Fours', isLocked: false, points: 0},
+                       {id: 5, combinations: 'Fives', isLocked: false, points: 0},
+                       {id: 6, combinations: 'Sixes', isLocked: false, points: 0},
+                       {id: 7, combinations: 'Sum', isLocked: false, points: 0},
+                       {id: 8, combinations: 'Bonus', isLocked: false, points: 0},
+                       {id: 9, combinations: 'One Pair', isLocked: false, points: 0},
+                       {id: 10, combinations: 'Two Pair', isLocked: false, points: 0},
+                       {id: 11, combinations: 'Trips', isLocked: false, points: 0},
+                       {id: 12, combinations: 'Small Straight', isLocked: false, points: 0},
+                       {id: 13, combinations: 'Large Straight', isLocked: false, points: 0},
+                       {id: 14, combinations: 'Full House', isLocked: false, points: 0},
+                       {id: 15, combinations: 'Chance', isLocked: false, points: 0},
+                       {id: 16, combinations: 'Yahtzee', isLocked: false, points: 0},
+                       {id: 17, combinations: 'Total', isLocked: false, points: 0},
+                       {id: 18, combinations: 'Ones', isLocked: false, points: 0}],
+        columns: ['combinations', 'points']
     },
     getters: {
-        getDiceHeldOne: state => {
-            return state.dices[0].isHeld;
+        getColumns: state => {
+            return state.columns;
+        },
+        getCombinations: state => {
+            return state.combinations;
         }
     },
     mutations: {
