@@ -30,7 +30,10 @@ export const store = new Vuex.Store({
                        {id: 17, combinations: 'Yahtzee', isLocked: false, points: 0},
                        {id: 18, combinations: 'Total', isLocked: false, points: 0},
                        ],
-        columns: ['combinations', 'points']
+        columns: ['combinations', 'points'],
+        roundOnHold: false,
+        diceValues: [],
+        rolls: 0
     },
     getters: {
         getColumns: state => {
@@ -42,16 +45,46 @@ export const store = new Vuex.Store({
     },
     mutations: {
         rollDice: state => {
-            for (let i = 0; i < 5; i++){
-                if (!state.dices[i].isHeld) {
-                    state.dices[i].value = Math.floor(Math.random() * 6) + 1;
-                    console.log(state.dices[i].value);
+            for (let i = 0; i < state.combinations.length; i ++) {
+                if (!state.combinations[i].isLocked) {
+                    state.combinations[i].points = 0;
+                }
+            }
+            if (!state.roundOnHold) {
+                for (let i = 0; i < 5; i++){
+                    if (!state.dices[i].isHeld) {
+                        state.dices[i].value = Math.floor(Math.random() * 6) + 1;
+                        state.diceValues[i] = state.dices[i].value;
+                    }
                 }
             }
             
+            state.diceValues.forEach((number) => {
+                if (number === 1)  {
+                    state.combinations[0].points += number;
+                }
+                if (number === 2) {
+                    state.combinations[1].points += number;
+                }
+                if (number === 3) {
+                    state.combinations[2].points += number;
+                }
+                if (number === 4) {
+                    state.combinations[3].points += number;
+                }
+                if (number === 5) {
+                    state.combinations[4].points += number;
+                }
+                if (number === 6) {
+                    state.combinations[5].points += number;
+                }
+                
+            });
+            
+            
         },
         holdDices: (state, index) => {
-            state.dices[index].isHeld = true;
+            state.dices[index].isHeld = !state.dices[index].isHeld;
         }
     },
     actions: {
