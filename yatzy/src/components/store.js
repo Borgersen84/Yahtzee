@@ -64,10 +64,10 @@ export const store = new Vuex.Store({
                     }
                 }
             }
-            let sortedDiceValues = [];
+            var sortedDiceValues = [];
             sortedDiceValues.push(... state.diceValues);
             sortedDiceValues.sort();
-            console.log(sortedDiceValues);
+            console.log('Sorted dices: ' + sortedDiceValues);
             console.log(state.diceValues);
             
             state.diceValues.forEach((number) => {
@@ -90,6 +90,20 @@ export const store = new Vuex.Store({
                     state.combinations[5].points += number;
                 }                
             });
+
+            var cons = 0;
+
+            for (let i = 0; i < sortedDiceValues.length; i++) {
+                if (sortedDiceValues[i] + 1 === sortedDiceValues[i + 1]) {
+                    cons++;
+                }
+                    if (cons >= 3) {
+                        state.combinations[12].points = 15;
+                    }
+                    if (cons > 3) {
+                        state.combinations[13].points = 20;
+                    }
+            }
 
             state.rolls++;
 
