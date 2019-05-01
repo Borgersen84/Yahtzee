@@ -4,8 +4,8 @@
             <tr>
                 <th class="table-th" v-for="(column, index) in columns()" :key="index">{{column}}</th>
             </tr>
-            <tr  v-for="(combo, index) in combinations()" :key="index">
-                <td v-for="(column, indexColumn,) in columns()" :key="indexColumn">{{combo[column]}}</td>
+            <tr v-for="(combo, index) in combinations()" :key="index">
+                <td @click="setPoints(combo.id)" v-for="(column, index) in columns()" :key="index">{{combo[column]}}</td>
             </tr>
         </table>
     </div>
@@ -19,6 +19,9 @@ export default {
         },
         combinations() {
              return this.$store.getters.getCombinations;
+        },
+        setPoints(index) {
+            this.$store.commit('setPoints', index);
         }
     }
 }
