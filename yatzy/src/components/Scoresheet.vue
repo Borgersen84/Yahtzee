@@ -22,6 +22,10 @@ export default {
         },
         setPoints(index) {
             this.$store.commit('setPoints', index);
+            this.unlockDices();
+        },
+        unlockDices() {
+            this.$store.commit('unlockDices');
         }
     }
 }

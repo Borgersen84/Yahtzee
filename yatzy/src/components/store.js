@@ -104,6 +104,11 @@ export const store = new Vuex.Store({
             state.combinations[index].isLocked = true;
             state.rolls = 0;
             state.roundOnHold = false;
+        },
+        unlockDices: state => {
+            for (let i = 0; i < state.dices.length; i++) {
+                state.dices[i].isHeld = false;
+            }
         }
     },
     actions: {
