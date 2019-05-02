@@ -35,7 +35,7 @@ export const store = new Vuex.Store({
         roundOnHold: false,
         diceValues: [],
         rolls: 0,
-        newRound: 0
+        newRound: false
     },
     getters: {
         getColumns: state => {
@@ -47,6 +47,8 @@ export const store = new Vuex.Store({
     },
     mutations: {
         rollDice: state => {
+            state.newRound = true;
+
             if (state.rolls >= 3) {
                 alert('Pls choose where to place your points');
                 state.roundOnHold = true;
@@ -56,6 +58,7 @@ export const store = new Vuex.Store({
                     state.combinations[i].points = 0;
                 }
             }
+
             if (!state.roundOnHold) {
                 for (let i = 0; i < 5; i++){
                     if (!state.dices[i].isHeld) {
@@ -65,12 +68,15 @@ export const store = new Vuex.Store({
                 }
             }
             var sortedDiceValues = [];
+            var totalSumOfDices = 0;
+        
             sortedDiceValues.push(... state.diceValues);
             sortedDiceValues.sort();
             console.log('Sorted dices: ' + sortedDiceValues);
             console.log(state.diceValues);
-            
+
             state.diceValues.forEach((number) => {
+                totalSumOfDices += number;
                 if (number === 1 && !state.combinations[0].isLocked)  {
                     state.combinations[0].points += number;
                 }
@@ -92,32 +98,64 @@ export const store = new Vuex.Store({
             });
 
             var cons = 0;
+            var checkYahtzee = 0;
 
-            for (let i = 0; i < sortedDiceValues.length; i++) {
+            for (let i = 0; i < sortedDiceValues.length -1; i++) {
                 if (sortedDiceValues[i] + 1 === sortedDiceValues[i + 1]) {
                     cons++;
                 }
-                    if (cons >= 3) {
+                    if (sortedDiceValues[0] === 1 && cons > 3) {
                         state.combinations[12].points = 15;
                     }
-                    if (cons > 3) {
+                    if (sortedDiceValues[0] === 2 && cons > 3) {
                         state.combinations[13].points = 20;
                     }
+                if (sortedDiceValues[i] === sortedDiceValues[i + 1]) {
+                    checkYahtzee++;
+                }
+                    if (checkYahtzee >= 2 && sortedDiceValues[1] === sortedDiceValues[2] || checkYahtzee >= 2 && sortedDiceValues[2] === sortedDiceValues[3]) {
+                        state.combinations[10].points = sortedDiceValues[2] * 3;
+                    }
+                    if (checkYahtzee >= 3 && sortedDiceValues[0] === sortedDiceValues[3] || checkYahtzee >= 3 && sortedDiceValues[1] === sortedDiceValues[4]) {
+                        state.combinations[11].points = sortedDiceValues[2] * 4;
+                    }
+                    if (checkYahtzee === 3 && sortedDiceValues[0] === sortedDiceValues[1] && sortedDiceValues[3] === sortedDiceValues[4]) {
+                        state.combinations[14].points = totalSumOfDices;
+                    }
+                    if (checkYahtzee > 3) {
+                        state.combinations[16].points = 50;
+                    }       
+            }
+
+            if (!state.combinations[15].isLocked) {
+                state.combinations[15].points = totalSumOfDices;
+            }
+
+            var sumOfUpperTable = state.combinations[0].points + state.combinations[1].points + state.combinations[2].points 
+                                 + state.combinations[3].points + state.combinations[4].points + state.combinations[5].points;
+
+             if (state.combinations[0].isLocked && state.combinations[1].isLocked && state.combinations[2].isLocked
+                    && state.combinations[3].isLocked && state.combinations[4].isLocked && state.combinations[5].isLocked) {
+                        state.combinations[6].points = sumOfUpperTable;
+                    }
+
+            if (sumOfUpperTable >= 63) {
+                state.combinations[7].points = 50;
             }
 
             state.rolls++;
-
-
-            
             
         },
         holdDices: (state, index) => {
             state.dices[index].isHeld = !state.dices[index].isHeld;
         },
         setPoints: (state, index) => {
-            state.combinations[index].isLocked = true;
+            if (state.newRound) {
+                state.combinations[index].isLocked = true;
+                state.newRound = false;
+            }
             state.rolls = 0;
-            state.roundOnHold = false;
+            
         },
         unlockDices: state => {
             for (let i = 0; i < state.dices.length; i++) {
