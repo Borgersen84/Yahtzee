@@ -1,6 +1,6 @@
 <template>
     <div class="dices-row">
-        <div class="dice" @click="holdDice(0)">{{diceValue(0)}}</div>
+        <div class="dice" :class="{'dice-clicked': getDices().isLocked}" @click="holdDice(0)">{{diceValue(0)}}</div>
         <div class="dice" @click="holdDice(1)">{{diceValue(1)}}</div>
         <div class="dice" @click="holdDice(2)">{{diceValue(2)}}</div>
         <div class="dice" @click="holdDice(3)">{{diceValue(3)}}</div>
@@ -17,6 +17,9 @@ export default {
         
         diceValue(index) {
             return this.$store.state.dices[index].value;
+        },
+        getDices() {
+            return this.$store.getters.getDices;
         }
     }
 }
@@ -37,6 +40,10 @@ export default {
         border-radius: 1rem;  
         font-size: 3rem;
         background-color: white;
+    }
+
+    .dice-clicked {
+        color: rgb(226, 133, 133);
     }
 </style>
 

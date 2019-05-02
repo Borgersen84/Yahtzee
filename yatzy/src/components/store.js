@@ -35,7 +35,10 @@ export const store = new Vuex.Store({
         roundOnHold: false,
         diceValues: [],
         rolls: 0,
-        newRound: false
+        newRound: false,
+        checkPairOne: 0,
+        checkPairTwo: 0,
+        clickOnPointsIsValid: true
     },
     getters: {
         getColumns: state => {
@@ -43,10 +46,19 @@ export const store = new Vuex.Store({
         },
         getCombinations: state => {
             return state.combinations;
+        },
+        getDiceValues: state => {
+            return state.diceValues;
+        },
+        getDices: state  => {
+            return state.dices;
         }
     },
     mutations: {
         rollDice: state => {
+            console.log('round on hold = ' + state.roundOnHold);
+            console.log('num of rolls: ' + state.rolls);
+            state.clickOnPointsIsValid = true;
             state.newRound = true;
 
             if (state.rolls >= 3) {
@@ -99,6 +111,8 @@ export const store = new Vuex.Store({
 
             var cons = 0;
             var checkYahtzee = 0;
+            //var checkPairOne = 0;
+            //var checkPairTwo = 0;
 
             for (let i = 0; i < sortedDiceValues.length -1; i++) {
                 if (sortedDiceValues[i] + 1 === sortedDiceValues[i + 1]) {
@@ -113,7 +127,10 @@ export const store = new Vuex.Store({
                 if (sortedDiceValues[i] === sortedDiceValues[i + 1]) {
                     checkYahtzee++;
                 }
-                    if (checkYahtzee >= 2 && sortedDiceValues[1] === sortedDiceValues[2] || checkYahtzee >= 2 && sortedDiceValues[2] === sortedDiceValues[3]) {
+                    if (checkYahtzee >= 2 && sortedDiceValues[0] === sortedDiceValues[1] && sortedDiceValues[1] === sortedDiceValues[2] ||
+                        checkYahtzee >= 3 && sortedDiceValues[1] === sortedDiceValues[2] && sortedDiceValues[2] === sortedDiceValues[3] ||
+                        checkYahtzee >= 2 && sortedDiceValues[2] === sortedDiceValues[3] && sortedDiceValues[3] === sortedDiceValues[4] ) {
+
                         state.combinations[10].points = sortedDiceValues[2] * 3;
                     }
                     if (checkYahtzee >= 3 && sortedDiceValues[0] === sortedDiceValues[3] || checkYahtzee >= 3 && sortedDiceValues[1] === sortedDiceValues[4]) {
@@ -124,7 +141,12 @@ export const store = new Vuex.Store({
                     }
                     if (checkYahtzee > 3) {
                         state.combinations[16].points = 50;
-                    }       
+                    } 
+                if (sortedDiceValues[i] === sortedDiceValues[i + 1] && sortedDiceValues[i] >= sortedDiceValues[i -1]) {
+                    state.checkPairOne = sortedDiceValues[i] + sortedDiceValues[i + 1];
+                    state.combinations[8].points = state.checkPairOne;
+                    console.log('One first = ' + state.checkPairOne);
+                }
             }
 
             if (!state.combinations[15].isLocked) {
@@ -134,7 +156,7 @@ export const store = new Vuex.Store({
             var sumOfUpperTable = state.combinations[0].points + state.combinations[1].points + state.combinations[2].points 
                                  + state.combinations[3].points + state.combinations[4].points + state.combinations[5].points;
 
-             if (state.combinations[0].isLocked && state.combinations[1].isLocked && state.combinations[2].isLocked
+            if (state.combinations[0].isLocked && state.combinations[1].isLocked && state.combinations[2].isLocked
                     && state.combinations[3].isLocked && state.combinations[4].isLocked && state.combinations[5].isLocked) {
                         state.combinations[6].points = sumOfUpperTable;
                     }
@@ -142,19 +164,20 @@ export const store = new Vuex.Store({
             if (sumOfUpperTable >= 63) {
                 state.combinations[7].points = 50;
             }
-
-            state.rolls++;
             
+            state.rolls++;
+
         },
         holdDices: (state, index) => {
             state.dices[index].isHeld = !state.dices[index].isHeld;
         },
         setPoints: (state, index) => {
-            if (state.newRound) {
+            if (state.newRound && state.clickOnPointsIsValid) {
                 state.combinations[index].isLocked = true;
-                state.newRound = false;
             }
+            state.roundOnHold = false;
             state.rolls = 0;
+            state.clickOnPointsIsValid = false;
             
         },
         unlockDices: state => {
