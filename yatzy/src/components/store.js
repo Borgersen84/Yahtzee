@@ -38,7 +38,8 @@ export const store = new Vuex.Store({
         newRound: false,
         checkPairOne: 0,
         checkPairTwo: 0,
-        clickOnPointsIsValid: true
+        clickOnPointsIsValid: true,
+        pairs: []
     },
     getters: {
         getColumns: state => {
@@ -56,6 +57,8 @@ export const store = new Vuex.Store({
     },
     mutations: {
         rollDice: state => {
+            
+            state.pairs = [];
             console.log('round on hold = ' + state.roundOnHold);
             console.log('num of rolls: ' + state.rolls);
             state.clickOnPointsIsValid = true;
@@ -111,8 +114,6 @@ export const store = new Vuex.Store({
 
             var cons = 0;
             var checkYahtzee = 0;
-            //var checkPairOne = 0;
-            //var checkPairTwo = 0;
 
             for (let i = 0; i < sortedDiceValues.length -1; i++) {
                 if (sortedDiceValues[i] + 1 === sortedDiceValues[i + 1]) {
@@ -128,7 +129,7 @@ export const store = new Vuex.Store({
                     checkYahtzee++;
                 }
                     if (checkYahtzee >= 2 && sortedDiceValues[0] === sortedDiceValues[1] && sortedDiceValues[1] === sortedDiceValues[2] ||
-                        checkYahtzee >= 3 && sortedDiceValues[1] === sortedDiceValues[2] && sortedDiceValues[2] === sortedDiceValues[3] ||
+                        checkYahtzee >= 2 && sortedDiceValues[1] === sortedDiceValues[2] && sortedDiceValues[2] === sortedDiceValues[3] ||
                         checkYahtzee >= 2 && sortedDiceValues[2] === sortedDiceValues[3] && sortedDiceValues[3] === sortedDiceValues[4] ) {
 
                         state.combinations[10].points = sortedDiceValues[2] * 3;
@@ -142,11 +143,20 @@ export const store = new Vuex.Store({
                     if (checkYahtzee > 3) {
                         state.combinations[16].points = 50;
                     } 
-                if (sortedDiceValues[i] === sortedDiceValues[i + 1] && sortedDiceValues[i] >= sortedDiceValues[i -1]) {
-                    state.checkPairOne = sortedDiceValues[i] + sortedDiceValues[i + 1];
-                    state.combinations[8].points = state.checkPairOne;
-                    console.log('One first = ' + state.checkPairOne);
+                
+                if (sortedDiceValues[i] === sortedDiceValues[i + 1] && sortedDiceValues[i]) {
+                    if (sortedDiceValues[i] + sortedDiceValues[i + 1] != state.pairs[0]) {
+                        state.pairs.push(sortedDiceValues[i] + sortedDiceValues[i + 1]);
+                    }
                 }
+                state.pairs.sort((a, b) => a - b);
+                state.combinations[8].points = state.pairs[state.pairs.length - 1];
+
+                if (state.pairs.length === 2) {
+                    state.combinations[9].points = state.pairs[0] + state.pairs[1];
+                }
+                console.log('One first = ' + state.checkPairOne);
+                console.log('Pairs array: ' + state.pairs);
             }
 
             if (!state.combinations[15].isLocked) {
@@ -178,6 +188,7 @@ export const store = new Vuex.Store({
             state.roundOnHold = false;
             state.rolls = 0;
             state.clickOnPointsIsValid = false;
+            state.pairs = [];
             
         },
         unlockDices: state => {
@@ -186,7 +197,4 @@ export const store = new Vuex.Store({
             }
         }
     },
-    actions: {
-
-    }
 });

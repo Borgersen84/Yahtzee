@@ -1,6 +1,6 @@
 <template>
     <div class="dices-row">
-        <div class="dice" :class="{'dice-clicked': getDices().isLocked}" @click="holdDice(0)">{{diceValue(0)}}</div>
+        <div class="dice" @click="holdDice(0)">{{diceValue(0)}}</div>
         <div class="dice" @click="holdDice(1)">{{diceValue(1)}}</div>
         <div class="dice" @click="holdDice(2)">{{diceValue(2)}}</div>
         <div class="dice" @click="holdDice(3)">{{diceValue(3)}}</div>
