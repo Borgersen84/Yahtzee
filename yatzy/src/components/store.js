@@ -38,8 +38,8 @@ export const store = new Vuex.Store({
         clickOnPointsIsValid: true,
         pairs: [],
         holdDiceIsValid: true,
-        sumOfUpperTable: 0,
-        finalScore: 0,
+        sumOfUpperTable: [],
+        finalScore: [],
         roundsleft: 15
     },
     getters: {
@@ -66,7 +66,7 @@ export const store = new Vuex.Store({
         rollDice: state => {
 
             state.pairs = [];
-            console.log('Final score: ' + state.finalScore);
+            console.log('Final score: ' + state.sumOfUpperTable);
             state.clickOnPointsIsValid = true;
             state.newRound = true;
             state.holdDiceIsValid = true;
@@ -191,17 +191,6 @@ export const store = new Vuex.Store({
             if (!state.combinations[15].isLocked) {
                 state.combinations[15].points = totalSumOfDices;
             }
-            else {
-                state.finalScore += state.combinations[15].points;
-            }
-           
-            state.combinations[6].points = state.sumOfUpperTable;
-            state.combinations[17].points = state.finalScore;
-
-            // Check to see if we are eligible for bonus points
-            if (state.sumOfUpperTable >= 63) {
-                state.combinations[7].points = 50;
-            }
             
             // Making sure roll counter never exceeds 3
             if (state.rolls < 3) {
@@ -222,6 +211,7 @@ export const store = new Vuex.Store({
         },
         // Place our points freely on the scoresheet before starting next round
         setPoints: (state, index) => {
+
             // Prevents to set score of more than one combination per round
             if (state.rolls < 1 && !state.combinations[index].isLocked) {
                 alert('Please roll again');
@@ -233,11 +223,40 @@ export const store = new Vuex.Store({
             }
             else if (state.newRound && state.clickOnPointsIsValid) {
                 state.combinations[index].isLocked = true;
+                state.finalScore.push(state.combinations[index].points);
+                if (state.combinations[index].id >= 0 && state.combinations[index].id <= 5) {
+                    state.sumOfUpperTable.push(state.combinations[index].points);
+                }
+                // Updates upper sector score for every new round
+                var upperSum = 0;
+                state.sumOfUpperTable.forEach((number) => {
+                upperSum += number;
+                });
+
+                // Updates total sum for every  new round
+                var totalSum = 0;
+                state.finalScore.forEach((number) => {
+                    totalSum += number;
+                });
+
+                state.combinations[6].points = upperSum;
+                state.combinations[17].points = totalSum;
+
+                // Add 50 bonus points if player is eligible for it
+                if (upperSum >= 63) {
+                    state.combinations[7].points = 50;
+                    state.combinations[17].points = totalSum + 50;
+                }
                 state.roundsleft--;
                 if (state.roundsleft === 0) {
-                   alert('Game Over! You scored ' + state.finalScore + ' points');
+                    if (confirm('Game Over! You scored ' + totalSum + ' points of 374 possible')){
+                        location.reload();
+                    }
                 }
             }
+
+            
+            
 
             state.roundOnHold = false;
             // resets roll count before new round
