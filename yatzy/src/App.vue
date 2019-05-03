@@ -19,6 +19,26 @@ export default {
 	font-size: 62.5%;
   overflow: hidden;
 }
+@media screen and (min-width: 320px) and (max-width: 480px) {
+	:root {
+		font-size: 50%;
+		background-color: rgb(80, 240, 106);
+	}
+ }
+
+ @media screen and (min-width: 700px) and (max-width: 768px) {
+	:root {
+		font-size: 95%;
+		background-color: rgb(221, 117, 48);
+	}
+ }
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+	:root {
+		font-size: 140%;
+		background-color: rgb(238, 218, 36);
+	}
+ }
 
 * {
   box-sizing: border-box;

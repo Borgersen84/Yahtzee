@@ -6,7 +6,10 @@
             id="dice-button"
             @click="rollDices"
             >Roll Dices</button>
-            <p id="roll-count">Rolls: {{diceRolls}} / 3</p>
+            <div class="round-counter">
+                <p id="roll-count">Rolls: {{diceRolls}} / 3</p>
+                <p id="rounds">Rounds left: {{roundsLeft}}</p>
+            </div>
             <app-scoresheet></app-scoresheet>
         </div>  
     </div>
@@ -28,6 +31,9 @@ export default {
     computed: {
         diceRolls() {
             return this.$store.getters.getRolls;
+        },
+        roundsLeft() {
+            return this.$store.getters.getRounds;
         }
     }
     
@@ -59,8 +65,16 @@ export default {
         cursor: pointer;
     }
 
-    #roll-count {
+    .round-counter {
         font-size: 1.5rem;
+        display: flex;
+        justify-content: center;
+    }
+    #roll-count {
+        margin-right: 2rem;
+    }
+    #rounds {
+        margin-left: 2rem;
     }
 </style>
 

@@ -10,6 +10,7 @@ export default {
         holdDice(index) {
             this.$store.commit('holdDices', index);
         },
+        
         diceValue(index) {
             return this.$store.state.dices[index].value;
         },
