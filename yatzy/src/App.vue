@@ -1,8 +1,9 @@
 <template>
   <div id="app">
-    <div class="container">
+    <div class="container"> 
       <router-view></router-view>
     </div>
+    
   </div>
 </template>
 
@@ -34,6 +35,8 @@ export default {
   margin: 0 auto;
   max-width: 80rem;
   padding: 2rem;
+  background-image: url("./images/dice_background.png");
 }
+
 
 </style>

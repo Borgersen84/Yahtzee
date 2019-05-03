@@ -6,6 +6,7 @@
             id="dice-button"
             @click="rollDices"
             >Roll Dices</button>
+            <p id="roll-count">Rolls: {{diceRolls}} / 3</p>
             <app-scoresheet></app-scoresheet>
         </div>  
     </div>
@@ -25,7 +26,9 @@ export default {
         }
     },
     computed: {
-        
+        diceRolls() {
+            return this.$store.getters.getRolls;
+        }
     }
     
 }
@@ -54,6 +57,10 @@ export default {
 
     #dice-button:hover {
         cursor: pointer;
+    }
+
+    #roll-count {
+        font-size: 1.5rem;
     }
 </style>
 

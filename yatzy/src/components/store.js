@@ -53,6 +53,9 @@ export const store = new Vuex.Store({
         },
         getDices: state  => {
             return state.dices;
+        },
+        getRolls: state => {
+            return state.rolls;
         }
     },
     mutations: {
@@ -179,7 +182,10 @@ export const store = new Vuex.Store({
                 state.combinations[7].points = 50;
             }
             
-            state.rolls++;
+            if (state.rolls < 3) {
+                state.rolls++;
+            }
+            
 
         },
         holdDices: (state, index) => {
@@ -187,11 +193,15 @@ export const store = new Vuex.Store({
                 state.dices[index].isHeld = !state.dices[index].isHeld;
             }
             else {
-                alert('You have to roll new values to hold this dice');
+                alert('Please roll dices again');
             }
             
         },
         setPoints: (state, index) => {
+            if (state.rolls < 1 && !state.combinations[index].isLocked) {
+                alert('Please roll again');
+                return;
+            }
             if (state.combinations[index].isLocked) {
                 alert('Not a valid choice')
                 state.roundOnHold = true;

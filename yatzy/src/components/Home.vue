@@ -5,7 +5,7 @@
         </div>
         <div class="center">
         <router-link to="/game">
-            <button id="play-button">Play Yahtzee</button>
+            <button id="play-button">Click To Play</button>
         </router-link>
         </div>  
     </div>
