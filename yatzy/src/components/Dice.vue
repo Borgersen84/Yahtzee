@@ -32,8 +32,8 @@ export default {
     }
     .dice {
         display: flex;
-        height: 7rem;
-        width: 7rem;
+        height: 9rem;
+        width: 9rem;
         padding: 2.2rem;
         margin: 0 auto;
         border: 1px solid gray;

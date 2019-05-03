@@ -39,7 +39,8 @@ export const store = new Vuex.Store({
         checkPairOne: 0,
         checkPairTwo: 0,
         clickOnPointsIsValid: true,
-        pairs: []
+        pairs: [],
+        holdDiceIsValid: true
     },
     getters: {
         getColumns: state => {
@@ -63,6 +64,7 @@ export const store = new Vuex.Store({
             console.log('num of rolls: ' + state.rolls);
             state.clickOnPointsIsValid = true;
             state.newRound = true;
+            state.holdDiceIsValid = true;
 
             if (state.rolls >= 3) {
                 alert('Pls choose where to place your points');
@@ -182,7 +184,13 @@ export const store = new Vuex.Store({
 
         },
         holdDices: (state, index) => {
-            state.dices[index].isHeld = !state.dices[index].isHeld;
+            if (state.holdDiceIsValid) {
+                state.dices[index].isHeld = !state.dices[index].isHeld;
+            }
+            else {
+                alert('You have to roll new values to hold this dice');
+            }
+            
         },
         setPoints: (state, index) => {
             if (state.newRound && state.clickOnPointsIsValid) {
@@ -192,6 +200,7 @@ export const store = new Vuex.Store({
             state.rolls = 0;
             state.clickOnPointsIsValid = false;
             state.pairs = [];
+            state.holdDiceIsValid = false;
             
         },
         unlockDices: state => {
