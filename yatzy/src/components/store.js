@@ -18,8 +18,8 @@ export const store = new Vuex.Store({
                        {id: 3, combinations: 'Fours', isLocked: false, points: 0},
                        {id: 4, combinations: 'Fives', isLocked: false, points: 0},
                        {id: 5, combinations: 'Sixes', isLocked: false, points: 0},
-                       {id: 6, combinations: 'Sum', isLocked: false, points: 0},
-                       {id: 7, combinations: 'Bonus', isLocked: false, points: 0},
+                       {id: 6, combinations: 'Sum', isLocked: false, points: 0, style: {color: 'black', cursor: 'text' }},
+                       {id: 7, combinations: 'Bonus', isLocked: false, points: 0, style: {color: 'red', cursor: 'text' }},
                        {id: 8, combinations: 'One Pair', isLocked: false, points: 0},
                        {id: 9, combinations: 'Two Pair', isLocked: false, points: 0},
                        {id: 10, combinations: 'Trips', isLocked: false, points: 0},
@@ -29,7 +29,7 @@ export const store = new Vuex.Store({
                        {id: 14, combinations: 'Full House', isLocked: false, points: 0},
                        {id: 15, combinations: 'Chance', isLocked: false, points: 0},
                        {id: 16, combinations: 'Yahtzee', isLocked: false, points: 0},
-                       {id: 17, combinations: 'Total', isLocked: false, points: 0},
+                       {id: 17, combinations: 'Total', isLocked: false, points: 0, style: {color: 'black', cursor: 'text' }},
                        ],
         columns: ['combinations', 'points'],
         roundOnHold: false,
@@ -150,9 +150,12 @@ export const store = new Vuex.Store({
                     }
                 }
                 state.pairs.sort((a, b) => a - b);
-                state.combinations[8].points = state.pairs[state.pairs.length - 1];
+                if (!state.combinations[8].isLocked) {
+                    state.combinations[8].points = state.pairs[state.pairs.length - 1];
+                }
+                
 
-                if (state.pairs.length === 2) {
+                if (state.pairs.length === 2 && !state.combinations[9].isLocked) {
                     state.combinations[9].points = state.pairs[0] + state.pairs[1];
                 }
                 console.log('One first = ' + state.checkPairOne);

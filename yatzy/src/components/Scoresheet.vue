@@ -5,7 +5,7 @@
                 <th class="table-th" v-for="(column, index) in columns()" :key="index">{{column}}</th>
             </tr>
             <tr v-for="(combo, index) in combinations()" :key="index">
-                <td :bind="combo.combinations" :class="{'table-td-clicked': combo.isLocked}" @click="setPoints(combo.id)" v-for="(column, index) in columns()" :key="index">{{combo[column]}}</td>
+                <td :style="combo.style" :class="{'table-td-clicked': combo.isLocked}" @click="setPoints(combo.id)" v-for="(column, index) in columns()" :key="index">{{combo[column]}}</td>
             </tr>
         </table>
     </div>
