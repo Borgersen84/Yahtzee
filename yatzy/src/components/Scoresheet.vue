@@ -5,7 +5,7 @@
                 <th class="table-th" v-for="(column, index) in columns()" :key="index">{{column}}</th>
             </tr>
             <tr v-for="(combo, index) in combinations()" :key="index">
-                <td :style="combo.style" :class="{'table-td-clicked': combo.isLocked}" @click="setPoints(combo.id)" v-for="(column, index) in columns()" :key="index">{{combo[column]}}</td>
+                <td :style="combo.style" :class="{'table-td-clicked': combo.isLocked, 'table-points': combo.givesPoints}" @click="setPoints(combo.id)" v-for="(column, index) in columns()" :key="index">{{combo[column]}}</td>
             </tr>
         </table>
     </div>
@@ -42,6 +42,10 @@ export default {
     .table-td-clicked {
         color: rgb(20, 20, 20);
         cursor: text;
+    }
+
+    .table-points {
+        color: rgb(209, 209, 60);
     }
 
     .table-th {

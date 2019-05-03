@@ -11,25 +11,24 @@ export const store = new Vuex.Store({
                 {id: 3, isHeld: false, value: 0},
                 {id: 4, isHeld: false, value: 0},
                 ],
-        rolls: 0,
-        combinations: [{id: 0, combinations: 'Ones', isLocked: false, points: 0},
-                       {id: 1, combinations: 'Twoes', isLocked: false, points: 0},
-                       {id: 2, combinations: 'Threes', isLocked: false, points: 0},
-                       {id: 3, combinations: 'Fours', isLocked: false, points: 0},
-                       {id: 4, combinations: 'Fives', isLocked: false, points: 0},
-                       {id: 5, combinations: 'Sixes', isLocked: false, points: 0},
-                       {id: 6, combinations: 'Sum', isLocked: false, points: 0, style: {color: 'black', cursor: 'text' }},
-                       {id: 7, combinations: 'Bonus', isLocked: false, points: 0, style: {color: 'red', cursor: 'text' }},
-                       {id: 8, combinations: 'One Pair', isLocked: false, points: 0},
-                       {id: 9, combinations: 'Two Pair', isLocked: false, points: 0},
-                       {id: 10, combinations: 'Trips', isLocked: false, points: 0},
-                       {id: 11, combinations: 'Quads', isLocked: false, points: 0},
-                       {id: 12, combinations: 'Small Straight', isLocked: false, points: 0},
-                       {id: 13, combinations: 'Large Straight', isLocked: false, points: 0},
-                       {id: 14, combinations: 'Full House', isLocked: false, points: 0},
-                       {id: 15, combinations: 'Chance', isLocked: false, points: 0},
-                       {id: 16, combinations: 'Yahtzee', isLocked: false, points: 0},
-                       {id: 17, combinations: 'Total', isLocked: false, points: 0, style: {color: 'black', cursor: 'text' }},
+        combinations: [{id: 0, combinations: 'Ones', isLocked: false, givesPoints: false, points: 0},
+                       {id: 1, combinations: 'Twoes', isLocked: false, givesPoints: false, points: 0},
+                       {id: 2, combinations: 'Threes', isLocked: false, givesPoints: false, points: 0},
+                       {id: 3, combinations: 'Fours', isLocked: false, givesPoints: false, points: 0},
+                       {id: 4, combinations: 'Fives', isLocked: false, givesPoints: false, points: 0},
+                       {id: 5, combinations: 'Sixes', isLocked: false, givesPoints: false, points: 0},
+                       {id: 6, combinations: 'Sum', isLocked: true, givesPoints: false, points: 0, style: {color: 'black', cursor: 'text' }},
+                       {id: 7, combinations: 'Bonus', isLocked: true, givesPoints: false, points: 0, style: {color: 'red', cursor: 'text' }},
+                       {id: 8, combinations: 'One Pair', isLocked: false, givesPoints: false, points: 0},
+                       {id: 9, combinations: 'Two Pair', isLocked: false, givesPoints: false, points: 0},
+                       {id: 10, combinations: 'Trips', isLocked: false, givesPoints: false, points: 0},
+                       {id: 11, combinations: 'Quads', isLocked: false, givesPoints: false, points: 0},
+                       {id: 12, combinations: 'Small Straight', isLocked: false, givesPoints: false, points: 0},
+                       {id: 13, combinations: 'Large Straight', isLocked: false, givesPoints: false, points: 0},
+                       {id: 14, combinations: 'Full House', isLocked: false, givesPoints: false, points: 0},
+                       {id: 15, combinations: 'Chance', isLocked: false, givesPoints: false, points: 0},
+                       {id: 16, combinations: 'Yahtzee', isLocked: false, givesPoints: false, points: 0},
+                       {id: 17, combinations: 'Total', isLocked: true, givesPoints: false, points: 0, style: {color: 'black', cursor: 'text' }},
                        ],
         columns: ['combinations', 'points'],
         roundOnHold: false,
@@ -58,7 +57,7 @@ export const store = new Vuex.Store({
     },
     mutations: {
         rollDice: state => {
-            
+
             state.pairs = [];
             console.log('round on hold = ' + state.roundOnHold);
             console.log('num of rolls: ' + state.rolls);
@@ -153,10 +152,9 @@ export const store = new Vuex.Store({
                     }
                 }
                 state.pairs.sort((a, b) => a - b);
-                if (!state.combinations[8].isLocked) {
+                if (!state.combinations[8].isLocked && state.pairs.length > 0) {
                     state.combinations[8].points = state.pairs[state.pairs.length - 1];
                 }
-                
 
                 if (state.pairs.length === 2 && !state.combinations[9].isLocked) {
                     state.combinations[9].points = state.pairs[0] + state.pairs[1];
@@ -185,7 +183,7 @@ export const store = new Vuex.Store({
 
         },
         holdDices: (state, index) => {
-            if (state.holdDiceIsValid) {
+            if (state.holdDiceIsValid && state.dices[index].value != 0) {
                 state.dices[index].isHeld = !state.dices[index].isHeld;
             }
             else {
@@ -195,13 +193,14 @@ export const store = new Vuex.Store({
         },
         setPoints: (state, index) => {
             if (state.combinations[index].isLocked) {
-                alert('You have already set this option')
+                alert('Not a valid choice')
                 state.roundOnHold = true;
                 return;
             }
             else if (state.newRound && state.clickOnPointsIsValid) {
                 state.combinations[index].isLocked = true;
             }
+
             state.roundOnHold = false;
             state.rolls = 0;
             state.clickOnPointsIsValid = false;

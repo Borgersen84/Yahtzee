@@ -1,6 +1,8 @@
 <template>
     <div>
-        <img src="src\images\yahtzee.jpg">
+        <div>
+            <img src="src\images\dice_background.png" height="300" width="300">
+        </div>
         <div class="center">
         <router-link to="/game">
             <button id="play-button">Play Yahtzee</button>
