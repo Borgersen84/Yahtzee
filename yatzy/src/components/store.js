@@ -70,6 +70,7 @@ export const store = new Vuex.Store({
                 alert('Pls choose where to place your points');
                 state.roundOnHold = true;
             }
+
             for (let i = 0; i < state.combinations.length; i ++) {
                 if (!state.combinations[i].isLocked) {
                     state.combinations[i].points = 0;
@@ -193,7 +194,12 @@ export const store = new Vuex.Store({
             
         },
         setPoints: (state, index) => {
-            if (state.newRound && state.clickOnPointsIsValid) {
+            if (state.combinations[index].isLocked) {
+                alert('You have already set this option')
+                state.roundOnHold = true;
+                return;
+            }
+            else if (state.newRound && state.clickOnPointsIsValid) {
                 state.combinations[index].isLocked = true;
             }
             state.roundOnHold = false;

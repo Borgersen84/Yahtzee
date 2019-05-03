@@ -1,10 +1,6 @@
 <template>
     <div class="dices-row">
-        <div class="dice" @click="holdDice(0)">{{diceValue(0)}}</div>
-        <div class="dice" @click="holdDice(1)">{{diceValue(1)}}</div>
-        <div class="dice" @click="holdDice(2)">{{diceValue(2)}}</div>
-        <div class="dice" @click="holdDice(3)">{{diceValue(3)}}</div>
-        <div class="dice" @click="holdDice(4)">{{diceValue(4)}}</div>
+        <div class="dice" @click="holdDice(dice.id)" v-for="(dice, index) in getDices()" :key="index" :class="{'dice-clicked': dice.isHeld}">{{dice.value}}</div>
     </div>
 </template>
 
@@ -20,6 +16,9 @@ export default {
         },
         getDices() {
             return this.$store.getters.getDices;
+        },
+        getDiceValues() {
+            return this.$store.getters.getDiceValues;
         }
     }
 }
@@ -32,8 +31,8 @@ export default {
     }
     .dice {
         display: flex;
-        height: 9rem;
-        width: 9rem;
+        height: 7rem;
+        width: 7rem;
         padding: 2.2rem;
         margin: 0 auto;
         border: 1px solid gray;
@@ -43,7 +42,7 @@ export default {
     }
 
     .dice-clicked {
-        color: rgb(226, 133, 133);
+        background-color: rgb(255, 94, 201);
     }
 </style>
 
